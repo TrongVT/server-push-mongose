@@ -41,6 +41,7 @@ app.get('/', function(req, res){
 //require('./routes/note.routes.js')(app);
 require('./routes/token.routes.js')(app);
 require('./routes/push.route.js')(app);
+module.exports = app;
 app.listen('2702',function(){
 	console.log('Example app listening on port 2702 !');
 })
