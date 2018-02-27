@@ -10,11 +10,12 @@ exports.sendtouser=function(req,res){
   // Create the messages that you want to send to clents
   var title=req.body.title;
   var content=req.body.content;
-  var usersend=req.body.user;
+  var usersend=req.body.id;
+  console.log("id :"+usersend)
   let messages = [];
   Token.find({},function(err,tokens){
     for (var item of tokens) {
-        if(item.user==usersend){
+        if(item.userid==usersend){
           messages.push({
             to: item.token,
             sound: 'default',
