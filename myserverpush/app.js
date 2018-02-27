@@ -22,29 +22,25 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
+// Configuring the database
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://trongkira:Doimat1102@ds119268.mlab.com:19268/tokens_table');
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  // we're connected!
+  console.log("connect successful");
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+app.get('/', function(req, res){
+  res.json({"message": "Welcome to EasyNotes application. Take notes quickly. Organize and keep track of all your notes."});
 });
-
-module.exports = app;
-
+// Require Notes routes
+//require('./routes/note.routes.js')(app);
+require('./routes/token.routes.js')(app);
+require('./routes/push.route.js')(app);
 app.listen('2702',function(){
 	console.log('Example app listening on port 2702 !');
 })
